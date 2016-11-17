@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.idp.web.producttype.dao.ProductTypeDao">
+
+	<parameterMap id="parameterMap" type="com.idp.web.producttype.entity.ProductType"></parameterMap>
+	<resultMap id="resultMap" type="com.idp.web.producttype.entity.ProductType">
+		<result property="id" column="id"/>
+		<result property="companyId" column="company_id"/>
+		<result property="parentId" column="parent_id"/>
+		<result property="protypeName" column="protype_name"/>
+		<result property="protypeIcon" column="protype_icon"/>
+		<result property="sort" column="sort"/>
+		<result property="delStatus" column="del_status"/>
+		<result property="createData" column="create_data"/>
+	</resultMap>
+	
+	<sql id="columnSql">
+		select
+			<trim suffixOverrides=",">
+				t.id,
+				t.company_id,
+				t.parent_id,
+				t.protype_name,
+				t.protype_icon,
+				t.sort,
+				t.del_status,
+				t.create_data,
+		 	</trim>
+		from product_type t
+	</sql>
+	
+	<select id="find" parameterMap="parameterMap" resultMap="resultMap">
+		<include refid="columnSql"></include>
+		<where>
+			<if test="companyId != null and companyId != ''">
+				t.company_id = #{companyId}
+			</if>
+			<if test="parentId != null and parentId != ''">
+				t.parent_id = #{parentId}
+			</if>
+			<if test="protypeName != null and protypeName != ''">
+				t.protype_name = #{protypeName}
+			</if>
+			<if test="protypeIcon != null and protypeIcon != ''">
+				t.protype_icon = #{protypeIcon}
+			</if>
+			<if test="sort != null and sort != ''">
+				t.sort = #{sort}
+			</if>
+			<if test="delStatus != null and delStatus != ''">
+				t.del_status = #{delStatus}
+			</if>
+			<if test="createData != null and createData != ''">
+				t.create_data = #{createData}
+			</if>
+		</where>
+	</select>
+	
+	<select id="getById" parameterType="java.lang.Long" resultMap="resultMap">
+		<include refid="columnSql"></include>
+		where id = #{value}
+	</select>
+	
+	<insert id="add" parameterMap="parameterMap">
+		insert into product_type
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			company_id,
+			parent_id,
+			protype_name,
+			protype_icon,
+			sort,
+			del_status,
+			create_data,
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{companyId},
+			#{parentId},
+			#{protypeName},
+			#{protypeIcon},
+			#{sort},
+			#{delStatus},
+			#{createData},
+		</trim>
+	</insert>
+	
+	<insert id="batchAdd" parameterType="java.util.List">
+		insert into product_type
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			company_id,
+			parent_id,
+			protype_name,
+			protype_icon,
+			sort,
+			del_status,
+			create_data,
+		</trim>
+		values
+		<foreach collection="list" item="item" separator=",">
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				#{item.companyId},
+				#{item.parentId},
+				#{item.protypeName},
+				#{item.protypeIcon},
+				#{item.sort},
+				#{item.delStatus},
+				#{item.createData},
+			</trim>
+		</foreach>
+	</insert>
+	
+	<update id="update" parameterMap="parameterMap">
+		update product_type
+		<set>
+			company_id = #{companyId},
+			parent_id = #{parentId},
+			protype_name = #{protypeName},
+			protype_icon = #{protypeIcon},
+			sort = #{sort},
+			del_status = #{delStatus},
+			create_data = #{createData},
+		</set>
+		where id = #{id}
+	</update>
+	
+	<update id="updateNotNull" parameterMap="parameterMap">
+		update product_type
+		<set>
+			<if test="companyId != null">
+			company_id = #{companyId},
+			</if>
+			<if test="parentId != null">
+			parent_id = #{parentId},
+			</if>
+			<if test="protypeName != null">
+			protype_name = #{protypeName},
+			</if>
+			<if test="protypeIcon != null">
+			protype_icon = #{protypeIcon},
+			</if>
+			<if test="sort != null">
+			sort = #{sort},
+			</if>
+			<if test="delStatus != null">
+			del_status = #{delStatus},
+			</if>
+			<if test="createData != null">
+			create_data = #{createData},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from product_type where id = #{value}
+	</delete>
+	
+	<delete id="batchDelete" parameterType="java.util.List">
+		delete from product_type where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<!-- 类型树 -->
+	<select id="findProductTypeTree" parameterType="java.lang.Long" resultType="com.idp.web.producttype.entity.ProductType">
+		
+		select
+				t.id,
+				t.company_id,
+				t.parent_id,
+				t.protype_name,
+				t.protype_icon,
+				t.sort,
+				t.del_status,
+				t.create_data,
+				count(m.id) as child_num
+		from product_type t
+		left join product_type m on m.parent_id = t.id
+		where t.parent_id = #{value}
+		group by t.id
+		order by t.sort
+	</select>
+	
+	
+</mapper>

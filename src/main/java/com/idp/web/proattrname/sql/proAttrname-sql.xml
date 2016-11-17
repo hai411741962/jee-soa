@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.idp.web.proattrname.dao.ProAttrnameDao">
+
+	<parameterMap id="parameterMap" type="com.idp.web.proattrname.entity.ProAttrname"></parameterMap>
+	<resultMap id="resultMap" type="com.idp.web.proattrname.entity.ProAttrname">
+		<result property="id" column="id"/>
+		<result property="title" column="title"/>
+		<result property="protypeId" column="protype_id"/>
+	</resultMap>
+	
+	<sql id="columnSql">
+		select
+			<trim suffixOverrides=",">
+				t.id,
+				t.title,
+				t.protype_id,
+		 	</trim>
+		from pro_attrname t
+	</sql>
+	
+	<select id="find" parameterMap="parameterMap" resultMap="resultMap">
+		SELECT 
+				pa.id as id,
+				pa.title as title,
+				pa.protype_id as protypeId,
+				pt.protype_name as protypeName
+			from pro_attrname  pa
+				LEFT JOIN product_type pt on pa.protype_id = pt.id
+			
+		<where>
+			<if test="title != null and title != ''">
+				pa.title = #{title}
+			</if>
+			<if test="protypeId != null and protypeId != ''">
+				pa.protype_id = #{protypeId}
+			</if>
+		</where>
+	</select>
+	
+	<select id="getById" parameterType="java.lang.Long" resultMap="resultMap">
+			SELECT 
+				pa.id as id,
+				pa.title as title,
+				pa.protype_id,
+				pt.protype_name as protypeName
+			from pro_attrname  pa
+				LEFT JOIN product_type pt on pa.protype_id = pt.id
+			where pa.id = #{value}
+	</select>
+	
+	<insert id="add" parameterMap="parameterMap">
+		insert into pro_attrname
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			title,
+			protype_id,
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{title},
+			#{protypeId},
+		</trim>
+	</insert>
+	
+	<insert id="batchAdd" parameterType="java.util.List">
+		insert into pro_attrname
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			title,
+			protype_id,
+		</trim>
+		values
+		<foreach collection="list" item="item" separator=",">
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				#{item.title},
+				#{item.protypeId},
+			</trim>
+		</foreach>
+	</insert>
+	
+	<update id="update" parameterMap="parameterMap">
+		update pro_attrname
+		<set>
+			title = #{title},
+			protype_id = #{protypeId},
+		</set>
+		where id = #{id}
+	</update>
+	
+	<update id="updateNotNull" parameterMap="parameterMap">
+		update pro_attrname
+		<set>
+			<if test="title != null">
+			title = #{title},
+			</if>
+			<if test="protypeId != null">
+			protype_id = #{protypeId},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from pro_attrname where id = #{value}
+	</delete>
+	
+	<delete id="batchDelete" parameterType="java.util.List">
+		delete from pro_attrname where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+	
+</mapper>

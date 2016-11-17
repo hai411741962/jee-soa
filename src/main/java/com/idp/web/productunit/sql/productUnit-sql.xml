@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.idp.web.productunit.dao.ProductUnitDao">
+
+	<parameterMap id="parameterMap" type="com.idp.web.productunit.entity.ProductUnit"></parameterMap>
+	<resultMap id="resultMap" type="com.idp.web.productunit.entity.ProductUnit">
+		<result property="id" column="id"/>
+		<result property="title" column="title"/>
+	</resultMap>
+	
+	<sql id="columnSql">
+		select
+			<trim suffixOverrides=",">
+				t.id,
+				t.title,
+		 	</trim>
+		from product_unit t
+	</sql>
+	
+	<select id="find" parameterMap="parameterMap" resultMap="resultMap">
+		<include refid="columnSql"></include>
+		<where>
+			<if test="title != null and title != ''">
+				t.title = #{title}
+			</if>
+		</where>
+	</select>
+	
+	<select id="getById" parameterType="java.lang.Long" resultMap="resultMap">
+		<include refid="columnSql"></include>
+		where id = #{value}
+	</select>
+	
+	<insert id="add" parameterMap="parameterMap">
+		insert into product_unit
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			title,
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{title},
+		</trim>
+	</insert>
+	
+	<insert id="batchAdd" parameterType="java.util.List">
+		insert into product_unit
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			title,
+		</trim>
+		values
+		<foreach collection="list" item="item" separator=",">
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				#{item.title},
+			</trim>
+		</foreach>
+	</insert>
+	
+	<update id="update" parameterMap="parameterMap">
+		update product_unit
+		<set>
+			title = #{title},
+		</set>
+		where id = #{id}
+	</update>
+	
+	<update id="updateNotNull" parameterMap="parameterMap">
+		update product_unit
+		<set>
+			<if test="title != null">
+			title = #{title},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from product_unit where id = #{value}
+	</delete>
+	
+	<delete id="batchDelete" parameterType="java.util.List">
+		delete from product_unit where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+	
+</mapper>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.idp.web.zcsupplier.dao.ZcSupplierDao">
+
+	<parameterMap id="parameterMap" type="com.idp.web.zcsupplier.entity.ZcSupplier"></parameterMap>
+	<resultMap id="resultMap" type="com.idp.web.zcsupplier.entity.ZcSupplier">
+		<result property="id" column="id"/>
+		<result property="code" column="code"/>
+		<result property="name" column="name"/>
+		<result property="phone" column="phone"/>
+		<result property="address" column="address"/>
+	</resultMap>
+	
+	<sql id="columnSql">
+		select
+			<trim suffixOverrides=",">
+				t.id,
+				t.code,
+				t.name,
+				t.phone,
+				t.address,
+		 	</trim>
+		from zc_supplier t
+	</sql>
+	
+	<select id="find" parameterMap="parameterMap" resultMap="resultMap">
+		<include refid="columnSql"></include>
+		<where>
+			<if test="code != null and code != ''">
+				t.code = #{code}
+			</if>
+			<if test="name != null and name != ''">
+				t.name = #{name}
+			</if>
+			<if test="phone != null and phone != ''">
+				t.phone = #{phone}
+			</if>
+			<if test="address != null and address != ''">
+				t.address = #{address}
+			</if>
+		</where>
+	</select>
+	
+	<select id="getById" parameterType="java.lang.Integer" resultMap="resultMap">
+		<include refid="columnSql"></include>
+		where id = #{value}
+	</select>
+	
+	<insert id="add" parameterMap="parameterMap">
+		insert into zc_supplier
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			code,
+			name,
+			phone,
+			address,
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{code},
+			#{name},
+			#{phone},
+			#{address},
+		</trim>
+	</insert>
+	
+	<insert id="batchAdd" parameterType="java.util.List">
+		insert into zc_supplier
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			code,
+			name,
+			phone,
+			address,
+		</trim>
+		values
+		<foreach collection="list" item="item" separator=",">
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				#{item.code},
+				#{item.name},
+				#{item.phone},
+				#{item.address},
+			</trim>
+		</foreach>
+	</insert>
+	
+	<update id="update" parameterMap="parameterMap">
+		update zc_supplier
+		<set>
+			code = #{code},
+			name = #{name},
+			phone = #{phone},
+			address = #{address},
+		</set>
+		where id = #{id}
+	</update>
+	
+	<update id="updateNotNull" parameterMap="parameterMap">
+		update zc_supplier
+		<set>
+			<if test="code != null">
+			code = #{code},
+			</if>
+			<if test="name != null">
+			name = #{name},
+			</if>
+			<if test="phone != null">
+			phone = #{phone},
+			</if>
+			<if test="address != null">
+			address = #{address},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="java.lang.Integer">
+		delete from zc_supplier where id = #{value}
+	</delete>
+	
+	<delete id="batchDelete" parameterType="java.util.List">
+		delete from zc_supplier where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+	
+</mapper>

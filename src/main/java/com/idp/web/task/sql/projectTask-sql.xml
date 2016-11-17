@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.idp.web.task.dao.ProjectTaskDao">
+
+	<parameterMap id="parameterMap" type="com.idp.web.task.entity.ProjectTask"></parameterMap>
+	<resultMap id="resultMap" type="com.idp.web.task.entity.ProjectTask">
+		<result property="id" column="id"/>
+		<result property="projectName" column="project_name"/>
+		<result property="name" column="name"/>
+		<result property="startTime" column="start_time"/>
+		<result property="endTime" column="end_time"/>
+		<result property="factStartTime" column="fact_start_time"/>
+		<result property="factEndTime" column="fact_end_time"/>
+		<result property=" presideName" column=" preside_name"/>
+		<result property="presideUserId" column="preside_user_id"/>
+		<result property="remark" column="remark"/>
+		<result property="status" column="status"/>
+	</resultMap>
+	
+	<sql id="columnSql">
+		select
+			<trim suffixOverrides=",">
+				t.id,
+				t.project_name,
+				t.name,
+				t.start_time,
+				t.end_time,
+				t.fact_start_time,
+				t.fact_end_time,
+				t. preside_name,
+				t.preside_user_id,
+				t.remark,
+				t.status,
+		 	</trim>
+		from project_task t
+	</sql>
+	
+	<sql id="columnSqlexcel">
+		select
+			<trim suffixOverrides=",">
+				t.project_name,
+				t.name,
+				t.start_time,
+				t.end_time,
+				t.fact_start_time,
+				t.fact_end_time,
+				t. preside_name,		
+				t.remark,
+				t.status,
+		 	</trim>
+		from project_task t
+	</sql>
+	
+	
+	<select id="findforexcel" parameterMap="parameterMap" resultMap="resultMap">
+		<include refid="columnSqlexcel"></include>
+		<where>
+			<if test="projectName != null and projectName != ''">
+				t.project_name = #{projectName}
+			</if>
+			<if test="name != null and name != ''">
+				t.name = #{name}
+			</if>
+			<if test="startTime != null and startTime != ''">
+				t.start_time = #{startTime}
+			</if>
+			<if test="endTime != null and endTime != ''">
+				t.end_time = #{endTime}
+			</if>
+			<if test="factStartTime != null and factStartTime != ''">
+				t.fact_start_time = #{factStartTime}
+			</if>
+			<if test="factEndTime != null and factEndTime != ''">
+				t.fact_end_time = #{factEndTime}
+			</if>
+			<if test=" presideName != null and  presideName != ''">
+				t. preside_name = #{ presideName}
+			</if>
+			<if test="presideUserId != null and presideUserId != ''">
+				t.preside_user_id = #{presideUserId}
+			</if>
+			<if test="remark != null and remark != ''">
+				t.remark = #{remark}
+			</if>
+			<if test="status != null and status != ''">
+				t.status = #{status}
+			</if>
+		</where>
+	</select>
+	
+	
+	
+	
+	
+	<select id="find" parameterMap="parameterMap" resultMap="resultMap">
+		<include refid="columnSql"></include>
+		<where>
+			<if test="projectName != null and projectName != ''">
+				t.project_name = #{projectName}
+			</if>
+			<if test="name != null and name != ''">
+				t.name = #{name}
+			</if>
+			<if test="startTime != null and startTime != ''">
+				t.start_time = #{startTime}
+			</if>
+			<if test="endTime != null and endTime != ''">
+				t.end_time = #{endTime}
+			</if>
+			<if test="factStartTime != null and factStartTime != ''">
+				t.fact_start_time = #{factStartTime}
+			</if>
+			<if test="factEndTime != null and factEndTime != ''">
+				t.fact_end_time = #{factEndTime}
+			</if>
+			<if test=" presideName != null and  presideName != ''">
+				t. preside_name = #{ presideName}
+			</if>
+			<if test="presideUserId != null and presideUserId != ''">
+				t.preside_user_id = #{presideUserId}
+			</if>
+			<if test="remark != null and remark != ''">
+				t.remark = #{remark}
+			</if>
+			<if test="status != null and status != ''">
+				t.status = #{status}
+			</if>
+		</where>
+	</select>
+	
+	<select id="getById" parameterType="java.lang.Integer" resultMap="resultMap">
+		<include refid="columnSql"></include>
+		where id = #{value}
+	</select>
+	
+	<insert id="add" parameterMap="parameterMap">
+		insert into project_task
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			project_name,
+			name,
+			start_time,
+			end_time,
+			fact_start_time,
+			fact_end_time,
+			 preside_name,
+			preside_user_id,
+			remark,
+			status,
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{projectName},
+			#{name},
+			#{startTime},
+			#{endTime},
+			#{factStartTime},
+			#{factEndTime},
+			#{ presideName},
+			#{presideUserId},
+			#{remark},
+			#{status},
+		</trim>
+	</insert>
+	
+	<insert id="batchAdd" parameterType="java.util.List">
+		insert into project_task
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			project_name,
+			name,
+			start_time,
+			end_time,
+			fact_start_time,
+			fact_end_time,
+			 preside_name,
+			preside_user_id,
+			remark,
+			status,
+		</trim>
+		values
+		<foreach collection="list" item="item" separator=",">
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				#{item.projectName},
+				#{item.name},
+				#{item.startTime},
+				#{item.endTime},
+				#{item.factStartTime},
+				#{item.factEndTime},
+				#{item. presideName},
+				#{item.presideUserId},
+				#{item.remark},
+				#{item.status},
+			</trim>
+		</foreach>
+	</insert>
+	
+	<update id="update" parameterMap="parameterMap">
+		update project_task
+		<set>
+			project_name = #{projectName},
+			name = #{name},
+			start_time = #{startTime},
+			end_time = #{endTime},
+			fact_start_time = #{factStartTime},
+			fact_end_time = #{factEndTime},
+			 preside_name = #{ presideName},
+			preside_user_id = #{presideUserId},
+			remark = #{remark},
+			status = #{status},
+		</set>
+		where id = #{id}
+	</update>
+	
+	<update id="updateNotNull" parameterMap="parameterMap">
+		update project_task
+		<set>
+			<if test="projectName != null">
+			project_name = #{projectName},
+			</if>
+			<if test="name != null">
+			name = #{name},
+			</if>
+			<if test="startTime != null">
+			start_time = #{startTime},
+			</if>
+			<if test="endTime != null">
+			end_time = #{endTime},
+			</if>
+			<if test="factStartTime != null">
+			fact_start_time = #{factStartTime},
+			</if>
+			<if test="factEndTime != null">
+			fact_end_time = #{factEndTime},
+			</if>
+			<if test=" presideName != null">
+			 preside_name = #{ presideName},
+			</if>
+			<if test="presideUserId != null">
+			preside_user_id = #{presideUserId},
+			</if>
+			<if test="remark != null">
+			remark = #{remark},
+			</if>
+			<if test="status != null">
+			status = #{status},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="java.lang.Integer">
+		delete from project_task where id = #{value}
+	</delete>
+	
+	<delete id="batchDelete" parameterType="java.util.List">
+		delete from project_task where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+	
+</mapper>

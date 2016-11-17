@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.idp.web.carconsrastresult.dao.CarConsrastResultDao">
+
+	<parameterMap id="parameterMap" type="com.idp.web.carconsrastresult.entity.CarConsrastResult"></parameterMap>
+	<resultMap id="resultMap" type="com.idp.web.carconsrastresult.entity.CarConsrastResult">
+		<result property="id" column="id"/>
+		<result property="resultType" column="result_type"/>
+		<result property="resultRemark" column="result_remark"/>
+		<result property="plateCode" column="plate_code"/>
+		<result property="plateColor" column="plate_color"/>
+		<result property="status" column="status"/>
+	</resultMap>
+	
+	<sql id="columnSql">
+		select
+			<trim suffixOverrides=",">
+				t.id,
+				t.result_type,
+				t.result_remark,
+				t.plate_code,
+				t.plate_color,
+				t.status,
+		 	</trim>
+		from car_consrast_result t
+	</sql>
+	
+	<select id="find" parameterMap="parameterMap" resultMap="resultMap">
+		<include refid="columnSql"></include>
+		<where>
+			<if test="resultType != null and resultType != ''">
+				t.result_type = #{resultType}
+			</if>
+			<if test="resultRemark != null and resultRemark != ''">
+				t.result_remark = #{resultRemark}
+			</if>
+			<if test="plateCode != null and plateCode != ''">
+				t.plate_code = #{plateCode}
+			</if>
+			<if test="plateColor != null and plateColor != ''">
+				t.plate_color = #{plateColor}
+			</if>
+			<if test="status != null and status != ''">
+				t.status = #{status}
+			</if>
+		</where>
+	</select>
+	
+	<select id="getById" parameterType="java.lang.Long" resultMap="resultMap">
+		<include refid="columnSql"></include>
+		where id = #{value}
+	</select>
+	
+	<insert id="add" parameterMap="parameterMap">
+		insert into car_consrast_result
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			result_type,
+			result_remark,
+			plate_code,
+			plate_color,
+			status,
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{resultType},
+			#{resultRemark},
+			#{plateCode},
+			#{plateColor},
+			#{status},
+		</trim>
+	</insert>
+	
+	<insert id="batchAdd" parameterType="java.util.List">
+		insert into car_consrast_result
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			result_type,
+			result_remark,
+			plate_code,
+			plate_color,
+			status,
+		</trim>
+		values
+		<foreach collection="list" item="item" separator=",">
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				#{item.resultType},
+				#{item.resultRemark},
+				#{item.plateCode},
+				#{item.plateColor},
+				#{item.status},
+			</trim>
+		</foreach>
+	</insert>
+	
+	<update id="update" parameterMap="parameterMap">
+		update car_consrast_result
+		<set>
+			result_type = #{resultType},
+			result_remark = #{resultRemark},
+			plate_code = #{plateCode},
+			plate_color = #{plateColor},
+			status = #{status},
+		</set>
+		where id = #{id}
+	</update>
+	
+	<update id="updateNotNull" parameterMap="parameterMap">
+		update car_consrast_result
+		<set>
+			<if test="resultType != null">
+			result_type = #{resultType},
+			</if>
+			<if test="resultRemark != null">
+			result_remark = #{resultRemark},
+			</if>
+			<if test="plateCode != null">
+			plate_code = #{plateCode},
+			</if>
+			<if test="plateColor != null">
+			plate_color = #{plateColor},
+			</if>
+			<if test="status != null">
+			status = #{status},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from car_consrast_result where id = #{value}
+	</delete>
+	
+	<delete id="batchDelete" parameterType="java.util.List">
+		delete from car_consrast_result where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+	
+</mapper>

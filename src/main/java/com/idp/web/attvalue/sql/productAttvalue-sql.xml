@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.idp.web.attvalue.dao.ProductAttvalueDao">
+
+	<parameterMap id="parameterMap" type="com.idp.web.attvalue.entity.ProductAttvalue"></parameterMap>
+	<resultMap id="resultMap" type="com.idp.web.attvalue.entity.ProductAttvalue">
+		<result property="id" column="id"/>
+		<result property="attId" column="att_id"/>
+		<result property="attValue" column="att_value"/>
+		<result property="unitId" column="unit_id"/>
+	</resultMap>
+	
+	<sql id="columnSql">
+		select
+			<trim suffixOverrides=",">
+				t.id,
+				t.att_id,
+				t.att_value,
+				t.unit_id,
+		 	</trim>
+		from product_attvalue t
+	</sql>
+	
+	<select id="find" parameterMap="parameterMap" resultMap="resultMap">
+		<include refid="columnSql"></include>
+		<where>
+			<if test="attId != null and attId != ''">
+				t.att_id = #{attId}
+			</if>
+			<if test="attValue != null and attValue != ''">
+				t.att_value = #{attValue}
+			</if>
+			<if test="unitId != null and unitId != ''">
+				t.unit_id = #{unitId}
+			</if>
+		</where>
+	</select>
+	
+	<select id="getById" parameterType="java.lang.Long" resultMap="resultMap">
+		<include refid="columnSql"></include>
+		where id = #{value}
+	</select>
+	
+	<insert id="add" parameterMap="parameterMap">
+		insert into product_attvalue
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			att_id,
+			att_value,
+			unit_id,
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{attId},
+			#{attValue},
+			#{unitId},
+		</trim>
+	</insert>
+	
+	<insert id="batchAdd" parameterType="java.util.List">
+		insert into product_attvalue
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			att_id,
+			att_value,
+			unit_id,
+		</trim>
+		values
+		<foreach collection="list" item="item" separator=",">
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				#{item.attId},
+				#{item.attValue},
+				#{item.unitId},
+			</trim>
+		</foreach>
+	</insert>
+	
+	<update id="update" parameterMap="parameterMap">
+		update product_attvalue
+		<set>
+			att_id = #{attId},
+			att_value = #{attValue},
+			unit_id = #{unitId},
+		</set>
+		where id = #{id}
+	</update>
+	
+	<update id="updateNotNull" parameterMap="parameterMap">
+		update product_attvalue
+		<set>
+			<if test="attId != null">
+			att_id = #{attId},
+			</if>
+			<if test="attValue != null">
+			att_value = #{attValue},
+			</if>
+			<if test="unitId != null">
+			unit_id = #{unitId},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from product_attvalue where id = #{value}
+	</delete>
+	
+	<delete id="batchDelete" parameterType="java.util.List">
+		delete from product_attvalue where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+	
+</mapper>

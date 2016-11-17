@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.idp.web.product.dao.ProductDao">
+
+	<parameterMap id="parameterMap" type="com.idp.web.product.entity.Product"></parameterMap>
+	<resultMap id="resultMap" type="com.idp.web.product.entity.Product">
+		<result property="id" column="id"/>
+		<result property="typeId" column="type_id"/>
+		<result property="companyId" column="company_id"/>
+		<result property="title" column="title"/>
+		<result property="createDate" column="create_date"/>
+		<result property="productLogo" column="product_logo"/>
+		<result property="delFlag" column="del_flag"/>
+		<result property="remark" column="remark"/>
+		<result property="sort" column="sort"/>
+	</resultMap>
+	
+	<sql id="columnSql">
+		select
+			<trim suffixOverrides=",">
+				t.id,
+				t.type_id,
+				t.company_id,
+				t.title,
+				t.create_date,
+				t.product_logo,
+				t.del_flag,
+				t.remark,
+				t.sort,
+		 	</trim>
+		from product t
+	</sql>
+	
+	<select id="find" parameterMap="parameterMap" resultMap="resultMap">
+		<include refid="columnSql"></include>
+		<where>
+			<if test="typeId != null and typeId != ''">
+				t.type_id = #{typeId}
+			</if>
+			<if test="companyId != null and companyId != ''">
+				t.company_id = #{companyId}
+			</if>
+			<if test="title != null and title != ''">
+				t.title = #{title}
+			</if>
+			<if test="createDate != null and createDate != ''">
+				t.create_date = #{createDate}
+			</if>
+			<if test="productLogo != null and productLogo != ''">
+				t.product_logo = #{productLogo}
+			</if>
+			<if test="delFlag != null and delFlag != ''">
+				t.del_flag = #{delFlag}
+			</if>
+			<if test="remark != null and remark != ''">
+				t.remark = #{remark}
+			</if>
+			<if test="sort != null and sort != ''">
+				t.sort = #{sort}
+			</if>
+		</where>
+	</select>
+	
+	<select id="getById" parameterType="java.lang.Long" resultMap="resultMap">
+		SELECT  
+			p.id as id,
+			p.type_id as typeId,
+			p.company_id as companyId,
+			p.title as title,
+			p.create_date as createDate,
+			p.product_Logo as productLogo,
+			p.del_flag as delFlag,
+			p.remark as remark,
+			p.sort as sort,
+			pt.protype_name as protypeName
+			from product p
+			LEFT JOIN product_type pt on pt.id = p.type_id
+		where id = #{value}
+	</select>
+	
+	<insert id="add" parameterMap="parameterMap">
+		insert into product
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			type_id,
+			company_id,
+			title,
+			create_date,
+			product_logo,
+			del_flag,
+			remark,
+			sort,
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{typeId},
+			#{companyId},
+			#{title},
+			#{createDate},
+			#{productLogo},
+			#{delFlag},
+			#{remark},
+			#{sort},
+		</trim>
+	</insert>
+	
+	<insert id="batchAdd" parameterType="java.util.List">
+		insert into product
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			type_id,
+			company_id,
+			title,
+			create_date,
+			product_logo,
+			del_flag,
+			remark,
+			sort,
+		</trim>
+		values
+		<foreach collection="list" item="item" separator=",">
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				#{item.typeId},
+				#{item.companyId},
+				#{item.title},
+				#{item.createDate},
+				#{item.productLogo},
+				#{item.delFlag},
+				#{item.remark},
+				#{item.sort},
+			</trim>
+		</foreach>
+	</insert>
+	
+	<update id="update" parameterMap="parameterMap">
+		update product
+		<set>
+			type_id = #{typeId},
+			company_id = #{companyId},
+			title = #{title},
+			create_date = #{createDate},
+			product_logo = #{productLogo},
+			del_flag = #{delFlag},
+			remark = #{remark},
+			sort = #{sort},
+		</set>
+		where id = #{id}
+	</update>
+	
+	<update id="updateNotNull" parameterMap="parameterMap">
+		update product
+		<set>
+			<if test="typeId != null">
+			type_id = #{typeId},
+			</if>
+			<if test="companyId != null">
+			company_id = #{companyId},
+			</if>
+			<if test="title != null">
+			title = #{title},
+			</if>
+			<if test="createDate != null">
+			create_date = #{createDate},
+			</if>
+			<if test="productLogo != null">
+			product_logo = #{productLogo},
+			</if>
+			<if test="delFlag != null">
+			del_flag = #{delFlag},
+			</if>
+			<if test="remark != null">
+			remark = #{remark},
+			</if>
+			<if test="sort != null">
+			sort = #{sort},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from product where id = #{value}
+	</delete>
+	
+	<delete id="batchDelete" parameterType="java.util.List">
+		delete from product where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+	
+</mapper>

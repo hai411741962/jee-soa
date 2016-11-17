@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.idp.web.zcpurchaseorder.dao.ZcPurchaseOrderDao">
+
+	<parameterMap id="parameterMap" type="com.idp.web.zcpurchaseorder.entity.ZcPurchaseOrder"></parameterMap>
+	<resultMap id="resultMap" type="com.idp.web.zcpurchaseorder.entity.ZcPurchaseOrder">
+		<result property="id" column="id"/>
+		<result property="code" column="code"/>
+		<result property="startTime" column="start_time"/>
+		<result property="endTime" column="end_time"/>
+		<result property="supplierId" column="supplier_id"/>
+		<result property="address" column="address"/>
+		<result property="dmoney" column="dmoney"/>
+		<result property="shuilv" column="shuilv"/>
+		<result property="zhidanren" column="zhidanren"/>
+		<result property="shenheren" column="shenheren"/>
+		<result property="state" column="state"/>
+	</resultMap>
+	
+	<sql id="columnSql">
+		select
+			<trim suffixOverrides=",">
+				t.id,
+				t.code,
+				t.start_time,
+				t.end_time,
+				t.supplier_id,
+				t.address,
+				t.dmoney,
+				t.shuilv,
+				t.zhidanren,
+				t.shenheren,
+				t.state,
+		 	</trim>
+		from zc_purchase_order t
+	</sql>
+	
+	<select id="find" parameterMap="parameterMap" resultMap="resultMap">
+		<include refid="columnSql"></include>
+		<where>
+			<if test="code != null and code != ''">
+				t.code = #{code}
+			</if>
+			<if test="startTime != null and startTime != ''">
+				t.start_time = #{startTime}
+			</if>
+			<if test="endTime != null and endTime != ''">
+				t.end_time = #{endTime}
+			</if>
+			<if test="supplierId != null and supplierId != ''">
+				t.supplier_id = #{supplierId}
+			</if>
+			<if test="address != null and address != ''">
+				t.address = #{address}
+			</if>
+			<if test="dmoney != null and dmoney != ''">
+				t.dmoney = #{dmoney}
+			</if>
+			<if test="shuilv != null and shuilv != ''">
+				t.shuilv = #{shuilv}
+			</if>
+			<if test="zhidanren != null and zhidanren != ''">
+				t.zhidanren = #{zhidanren}
+			</if>
+			<if test="shenheren != null and shenheren != ''">
+				t.shenheren = #{shenheren}
+			</if>
+			<if test="state != null and state != ''">
+				t.state = #{state}
+			</if>
+		</where>
+	</select>
+	
+	<select id="getById" parameterType="java.lang.Integer" resultMap="resultMap">
+		<include refid="columnSql"></include>
+		where id = #{value}
+	</select>
+	
+	<insert id="add" parameterMap="parameterMap">
+		insert into zc_purchase_order
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			code,
+			start_time,
+			end_time,
+			supplier_id,
+			address,
+			dmoney,
+			shuilv,
+			zhidanren,
+			shenheren,
+			state,
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{code},
+			#{startTime},
+			#{endTime},
+			#{supplierId},
+			#{address},
+			#{dmoney},
+			#{shuilv},
+			#{zhidanren},
+			#{shenheren},
+			#{state},
+		</trim>
+	</insert>
+	
+	<insert id="batchAdd" parameterType="java.util.List">
+		insert into zc_purchase_order
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			code,
+			start_time,
+			end_time,
+			supplier_id,
+			address,
+			dmoney,
+			shuilv,
+			zhidanren,
+			shenheren,
+			state,
+		</trim>
+		values
+		<foreach collection="list" item="item" separator=",">
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				#{item.code},
+				#{item.startTime},
+				#{item.endTime},
+				#{item.supplierId},
+				#{item.address},
+				#{item.dmoney},
+				#{item.shuilv},
+				#{item.zhidanren},
+				#{item.shenheren},
+				#{item.state},
+			</trim>
+		</foreach>
+	</insert>
+	
+	<update id="update" parameterMap="parameterMap">
+		update zc_purchase_order
+		<set>
+			code = #{code},
+			start_time = #{startTime},
+			end_time = #{endTime},
+			supplier_id = #{supplierId},
+			address = #{address},
+			dmoney = #{dmoney},
+			shuilv = #{shuilv},
+			zhidanren = #{zhidanren},
+			shenheren = #{shenheren},
+			state = #{state},
+		</set>
+		where id = #{id}
+	</update>
+	
+	<update id="updateNotNull" parameterMap="parameterMap">
+		update zc_purchase_order
+		<set>
+			<if test="code != null">
+			code = #{code},
+			</if>
+			<if test="startTime != null">
+			start_time = #{startTime},
+			</if>
+			<if test="endTime != null">
+			end_time = #{endTime},
+			</if>
+			<if test="supplierId != null">
+			supplier_id = #{supplierId},
+			</if>
+			<if test="address != null">
+			address = #{address},
+			</if>
+			<if test="dmoney != null">
+			dmoney = #{dmoney},
+			</if>
+			<if test="shuilv != null">
+			shuilv = #{shuilv},
+			</if>
+			<if test="zhidanren != null">
+			zhidanren = #{zhidanren},
+			</if>
+			<if test="shenheren != null">
+			shenheren = #{shenheren},
+			</if>
+			<if test="state != null">
+			state = #{state},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="java.lang.Integer">
+		delete from zc_purchase_order where id = #{value}
+	</delete>
+	
+	<delete id="batchDelete" parameterType="java.util.List">
+		delete from zc_purchase_order where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+	
+</mapper>

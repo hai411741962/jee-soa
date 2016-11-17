@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.idp.web.company.dao.SysEnterpriseDao">
+
+	<parameterMap id="parameterMap" type="com.idp.web.company.entity.SysEnterprise"></parameterMap>
+	<resultMap id="resultMap" type="com.idp.web.company.entity.SysEnterprise">
+		<result property="id" column="id"/>
+		<result property="name" column="name"/>
+		<result property="legal" column="legal"/>
+		<result property="identcode" column="identcode"/>
+		<result property="address" column="address"/>
+		<result property="enterphone" column="enterphone"/>
+		<result property="enterfox" column="enterfox"/>
+		<result property="enterzipcode" column="enterzipcode"/>
+		<result property="orgcode" column="orgcode"/>
+		<result property="areap" column="areap"/>
+		<result property="areac" column="areac"/>
+		<result property="areaa" column="areaa"/>
+		<result property="enterpisecode" column="enterpisecode"/>
+		<result property="pid" column="pid"/>
+	</resultMap>
+	
+	<sql id="columnSql">
+		select
+			<trim suffixOverrides=",">
+				t.id,
+				t.name,
+				t.legal,
+				t.identcode,
+				t.address,
+				t.enterphone,
+				t.enterfox,
+				t.enterzipcode,
+				t.orgcode,
+				t.areap,
+				t.areac,
+				t.areaa,
+				t.enterpisecode,
+				t.pid,
+		 	</trim>
+		from sys_enterprise t
+	</sql>
+	
+	<select id="find" parameterMap="parameterMap" resultMap="resultMap">
+		<include refid="columnSql"></include>
+		<where>
+			<if test="name != null and name != ''">
+				t.name = #{name}
+			</if>
+			<if test="legal != null and legal != ''">
+				t.legal = #{legal}
+			</if>
+			<if test="identcode != null and identcode != ''">
+				t.identcode = #{identcode}
+			</if>
+			<if test="address != null and address != ''">
+				t.address = #{address}
+			</if>
+			<if test="enterphone != null and enterphone != ''">
+				t.enterphone = #{enterphone}
+			</if>
+			<if test="enterfox != null and enterfox != ''">
+				t.enterfox = #{enterfox}
+			</if>
+			<if test="enterzipcode != null and enterzipcode != ''">
+				t.enterzipcode = #{enterzipcode}
+			</if>
+			<if test="orgcode != null and orgcode != ''">
+				t.orgcode = #{orgcode}
+			</if>
+			<if test="areap != null and areap != ''">
+				t.areap = #{areap}
+			</if>
+			<if test="areac != null and areac != ''">
+				t.areac = #{areac}
+			</if>
+			<if test="areaa != null and areaa != ''">
+				t.areaa = #{areaa}
+			</if>
+			<if test="enterpisecode != null and enterpisecode != ''">
+				t.enterpisecode = #{enterpisecode}
+			</if>
+			<if test="pid != null and pid != ''">
+				t.pid = #{pid}
+			</if>
+		</where>
+	</select>
+	
+	<select id="getById" parameterType="java.lang.Long" resultMap="resultMap">
+		<include refid="columnSql"></include>
+		where id = #{value}
+	</select>
+	
+	<insert id="add" parameterMap="parameterMap">
+		insert into sys_enterprise
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			name,
+			legal,
+			identcode,
+			address,
+			enterphone,
+			enterfox,
+			enterzipcode,
+			orgcode,
+			areap,
+			areac,
+			areaa,
+			enterpisecode,
+			pid,
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{name},
+			#{legal},
+			#{identcode},
+			#{address},
+			#{enterphone},
+			#{enterfox},
+			#{enterzipcode},
+			#{orgcode},
+			#{areap},
+			#{areac},
+			#{areaa},
+			#{enterpisecode},
+			#{pid},
+		</trim>
+	</insert>
+	
+	<insert id="batchAdd" parameterType="java.util.List">
+		insert into sys_enterprise
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			name,
+			legal,
+			identcode,
+			address,
+			enterphone,
+			enterfox,
+			enterzipcode,
+			orgcode,
+			areap,
+			areac,
+			areaa,
+			enterpisecode,
+			pid,
+		</trim>
+		values
+		<foreach collection="list" item="item" separator=",">
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				#{item.name},
+				#{item.legal},
+				#{item.identcode},
+				#{item.address},
+				#{item.enterphone},
+				#{item.enterfox},
+				#{item.enterzipcode},
+				#{item.orgcode},
+				#{item.areap},
+				#{item.areac},
+				#{item.areaa},
+				#{item.enterpisecode},
+				#{item.pid},
+			</trim>
+		</foreach>
+	</insert>
+	
+	<update id="update" parameterMap="parameterMap">
+		update sys_enterprise
+		<set>
+			name = #{name},
+			legal = #{legal},
+			identcode = #{identcode},
+			address = #{address},
+			enterphone = #{enterphone},
+			enterfox = #{enterfox},
+			enterzipcode = #{enterzipcode},
+			orgcode = #{orgcode},
+			areap = #{areap},
+			areac = #{areac},
+			areaa = #{areaa},
+			enterpisecode = #{enterpisecode},
+			pid = #{pid},
+		</set>
+		where id = #{id}
+	</update>
+	
+	<update id="updateNotNull" parameterMap="parameterMap">
+		update sys_enterprise
+		<set>
+			<if test="name != null">
+			name = #{name},
+			</if>
+			<if test="legal != null">
+			legal = #{legal},
+			</if>
+			<if test="identcode != null">
+			identcode = #{identcode},
+			</if>
+			<if test="address != null">
+			address = #{address},
+			</if>
+			<if test="enterphone != null">
+			enterphone = #{enterphone},
+			</if>
+			<if test="enterfox != null">
+			enterfox = #{enterfox},
+			</if>
+			<if test="enterzipcode != null">
+			enterzipcode = #{enterzipcode},
+			</if>
+			<if test="orgcode != null">
+			orgcode = #{orgcode},
+			</if>
+			<if test="areap != null">
+			areap = #{areap},
+			</if>
+			<if test="areac != null">
+			areac = #{areac},
+			</if>
+			<if test="areaa != null">
+			areaa = #{areaa},
+			</if>
+			<if test="enterpisecode != null">
+			enterpisecode = #{enterpisecode},
+			</if>
+			<if test="pid != null">
+			pid = #{pid},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from sys_enterprise where id = #{value}
+	</delete>
+	
+	<delete id="batchDelete" parameterType="java.util.List">
+		delete from sys_enterprise where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+	
+</mapper>

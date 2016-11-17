@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.idp.web.productsku.dao.ProductSkuDao">
+
+	<parameterMap id="parameterMap" type="com.idp.web.productsku.entity.ProductSku"></parameterMap>
+	<resultMap id="resultMap" type="com.idp.web.productsku.entity.ProductSku">
+		<result property="id" column="id"/>
+		<result property="productId" column="product_id"/>
+		<result property="attrnameId" column="attrname_id"/>
+		<result property="attrvalueId" column="attrvalue_id"/>
+		<result property="proCode" column="pro_code"/>
+		<result property="proStock" column="pro_stock"/>
+		<result property="salsePrice" column="salse_price"/>
+	</resultMap>
+	
+	<sql id="columnSql">
+		select
+			<trim suffixOverrides=",">
+				t.id,
+				t.product_id,
+				t.attrname_id,
+				t.attrvalue_id,
+				t.pro_code,
+				t.pro_stock,
+				t.salse_price,
+		 	</trim>
+		from product_sku t
+	</sql>
+	
+	<select id="find" parameterMap="parameterMap" resultMap="resultMap">
+		<include refid="columnSql"></include>
+		<where>
+			<if test="productId != null and productId != ''">
+				t.product_id = #{productId}
+			</if>
+			<if test="attrnameId != null and attrnameId != ''">
+				t.attrname_id = #{attrnameId}
+			</if>
+			<if test="attrvalueId != null and attrvalueId != ''">
+				t.attrvalue_id = #{attrvalueId}
+			</if>
+			<if test="proCode != null and proCode != ''">
+				t.pro_code = #{proCode}
+			</if>
+			<if test="proStock != null and proStock != ''">
+				t.pro_stock = #{proStock}
+			</if>
+			<if test="salsePrice != null and salsePrice != ''">
+				t.salse_price = #{salsePrice}
+			</if>
+		</where>
+	</select>
+	
+	<select id="getById" parameterType="java.lang.Long" resultMap="resultMap">
+		<include refid="columnSql"></include>
+		where id = #{value}
+	</select>
+	
+	<insert id="add" parameterMap="parameterMap">
+		insert into product_sku
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			product_id,
+			attrname_id,
+			attrvalue_id,
+			pro_code,
+			pro_stock,
+			salse_price,
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{productId},
+			#{attrnameId},
+			#{attrvalueId},
+			#{proCode},
+			#{proStock},
+			#{salsePrice},
+		</trim>
+	</insert>
+	
+	<insert id="batchAdd" parameterType="java.util.List">
+		insert into product_sku
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			product_id,
+			attrname_id,
+			attrvalue_id,
+			pro_code,
+			pro_stock,
+			salse_price,
+		</trim>
+		values
+		<foreach collection="list" item="item" separator=",">
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				#{item.productId},
+				#{item.attrnameId},
+				#{item.attrvalueId},
+				#{item.proCode},
+				#{item.proStock},
+				#{item.salsePrice},
+			</trim>
+		</foreach>
+	</insert>
+	
+	<update id="update" parameterMap="parameterMap">
+		update product_sku
+		<set>
+			product_id = #{productId},
+			attrname_id = #{attrnameId},
+			attrvalue_id = #{attrvalueId},
+			pro_code = #{proCode},
+			pro_stock = #{proStock},
+			salse_price = #{salsePrice},
+		</set>
+		where id = #{id}
+	</update>
+	
+	<update id="updateNotNull" parameterMap="parameterMap">
+		update product_sku
+		<set>
+			<if test="productId != null">
+			product_id = #{productId},
+			</if>
+			<if test="attrnameId != null">
+			attrname_id = #{attrnameId},
+			</if>
+			<if test="attrvalueId != null">
+			attrvalue_id = #{attrvalueId},
+			</if>
+			<if test="proCode != null">
+			pro_code = #{proCode},
+			</if>
+			<if test="proStock != null">
+			pro_stock = #{proStock},
+			</if>
+			<if test="salsePrice != null">
+			salse_price = #{salsePrice},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from product_sku where id = #{value}
+	</delete>
+	
+	<delete id="batchDelete" parameterType="java.util.List">
+		delete from product_sku where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+	
+</mapper>

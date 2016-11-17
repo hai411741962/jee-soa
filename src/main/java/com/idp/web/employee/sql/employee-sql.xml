@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.idp.web.employee.dao.EmployeeDao">
+
+	<parameterMap id="parameterMap" type="com.idp.web.employee.entity.Employee"></parameterMap>
+	<resultMap id="resultMap" type="com.idp.web.employee.entity.Employee">
+		<result property="id" column="id"/>
+		<result property="addressid" column="addressid"/>
+		<result property="deptid" column="deptid"/>
+		<result property="compid" column="compid"/>
+		<result property="所属公司" column="compname"/>
+		<result property="姓名" column="name"/>
+		<result property="年龄" column="age"/>
+		<result property="性别" column="sex"/>
+		<result property="post" column="post"/>
+		<result property="所属部门" column="department"/>
+		<result property="title" column="title"/>
+		<result property="moble" column="moble"/>
+		<result property="手机号" column="phone"/>
+		<result property="地址" column="address"/>
+		<result property="idcard" column="idcard"/>
+		<result property="idcardimg" column="idcardimg"/>
+		<result property="头像" column="headimg"/>
+		<result property="employdate" column="employdate"/>
+		<result property="enddate" column="enddate"/>
+		<result property="email" column="email"/>
+		<result property="qq" column="qq"/>
+		<result property="微信" column="wechat"/>
+		<result property="微博" column="weibo"/>
+		<result property="dingding" column="dingding"/>
+		<result property="类型" column="type"/>
+		<result property="note" column="note"/>
+		<result property="createtime" column="createtime"/>
+		<result property="starttime" column="starttime"/>
+		<result property="endtime" column="endtime"/>
+		<result property="排序" column="sort"/>
+		<result property="状态" column="status"/>
+		<result property="barcode" column="barcode"/>
+	</resultMap>
+	
+	<sql id="columnSql">
+		select
+			<trim suffixOverrides=",">
+				t.id,
+				t.addressid,
+				t.deptid,
+				t.compid,
+				t.compname,
+				t.name,
+				t.age,
+				t.sex,
+				t.post,
+				t.department,
+				t.title,
+				t.moble,
+				t.phone,
+				t.address,
+				t.idcard,
+				t.idcardimg,
+				t.headimg,
+				t.employdate,
+				t.enddate,
+				t.email,
+				t.qq,
+				t.wechat,
+				t.weibo,
+				t.dingding,
+				t.type,
+				t.note,
+				t.createtime,
+				t.starttime,
+				t.endtime,
+				t.sort,
+				t.status,
+				t.barcode,
+		 	</trim>
+		from employee t
+	</sql>
+	
+	<select id="find" parameterMap="parameterMap" resultMap="resultMap">
+		<include refid="columnSql"></include>
+		<where>
+			<if test="addressid != null and addressid != ''">
+				t.addressid = #{addressid}
+			</if>
+			<if test="deptid != null and deptid != ''">
+				t.deptid = #{deptid}
+			</if>
+			<if test="compid != null and compid != ''">
+				t.compid = #{compid}
+			</if>
+			<if test="所属公司 != null and 所属公司 != ''">
+				t.compname = #{所属公司}
+			</if>
+			<if test="姓名 != null and 姓名 != ''">
+				t.name = #{姓名}
+			</if>
+			<if test="年龄 != null and 年龄 != ''">
+				t.age = #{年龄}
+			</if>
+			<if test="性别 != null and 性别 != ''">
+				t.sex = #{性别}
+			</if>
+			<if test="post != null and post != ''">
+				t.post = #{post}
+			</if>
+			<if test="所属部门 != null and 所属部门 != ''">
+				t.department = #{所属部门}
+			</if>
+			<if test="title != null and title != ''">
+				t.title = #{title}
+			</if>
+			<if test="moble != null and moble != ''">
+				t.moble = #{moble}
+			</if>
+			<if test="手机号 != null and 手机号 != ''">
+				t.phone = #{手机号}
+			</if>
+			<if test="地址 != null and 地址 != ''">
+				t.address = #{地址}
+			</if>
+			<if test="idcard != null and idcard != ''">
+				t.idcard = #{idcard}
+			</if>
+			<if test="idcardimg != null and idcardimg != ''">
+				t.idcardimg = #{idcardimg}
+			</if>
+			<if test="头像 != null and 头像 != ''">
+				t.headimg = #{头像}
+			</if>
+			<if test="employdate != null and employdate != ''">
+				t.employdate = #{employdate}
+			</if>
+			<if test="enddate != null and enddate != ''">
+				t.enddate = #{enddate}
+			</if>
+			<if test="email != null and email != ''">
+				t.email = #{email}
+			</if>
+			<if test="qq != null and qq != ''">
+				t.qq = #{qq}
+			</if>
+			<if test="微信 != null and 微信 != ''">
+				t.wechat = #{微信}
+			</if>
+			<if test="微博 != null and 微博 != ''">
+				t.weibo = #{微博}
+			</if>
+			<if test="dingding != null and dingding != ''">
+				t.dingding = #{dingding}
+			</if>
+			<if test="类型 != null and 类型 != ''">
+				t.type = #{类型}
+			</if>
+			<if test="note != null and note != ''">
+				t.note = #{note}
+			</if>
+			<if test="createtime != null and createtime != ''">
+				t.createtime = #{createtime}
+			</if>
+			<if test="starttime != null and starttime != ''">
+				t.starttime = #{starttime}
+			</if>
+			<if test="endtime != null and endtime != ''">
+				t.endtime = #{endtime}
+			</if>
+			<if test="排序 != null and 排序 != ''">
+				t.sort = #{排序}
+			</if>
+			<if test="状态 != null and 状态 != ''">
+				t.status = #{状态}
+			</if>
+			<if test="barcode != null and barcode != ''">
+				t.barcode = #{barcode}
+			</if>
+		</where>
+	</select>
+	
+	<select id="getById" parameterType="java.lang.Long" resultMap="resultMap">
+		<include refid="columnSql"></include>
+		where id = #{value}
+	</select>
+	
+	<insert id="add" parameterMap="parameterMap">
+		insert into employee
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			addressid,
+			deptid,
+			compid,
+			compname,
+			name,
+			age,
+			sex,
+			post,
+			department,
+			title,
+			moble,
+			phone,
+			address,
+			idcard,
+			idcardimg,
+			headimg,
+			employdate,
+			enddate,
+			email,
+			qq,
+			wechat,
+			weibo,
+			dingding,
+			type,
+			note,
+			createtime,
+			starttime,
+			endtime,
+			sort,
+			status,
+			barcode,
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{addressid},
+			#{deptid},
+			#{compid},
+			#{所属公司},
+			#{姓名},
+			#{年龄},
+			#{性别},
+			#{post},
+			#{所属部门},
+			#{title},
+			#{moble},
+			#{手机号},
+			#{地址},
+			#{idcard},
+			#{idcardimg},
+			#{头像},
+			#{employdate},
+			#{enddate},
+			#{email},
+			#{qq},
+			#{微信},
+			#{微博},
+			#{dingding},
+			#{类型},
+			#{note},
+			#{createtime},
+			#{starttime},
+			#{endtime},
+			#{排序},
+			#{状态},
+			#{barcode},
+		</trim>
+	</insert>
+	
+	<insert id="batchAdd" parameterType="java.util.List">
+		insert into employee
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			addressid,
+			deptid,
+			compid,
+			compname,
+			name,
+			age,
+			sex,
+			post,
+			department,
+			title,
+			moble,
+			phone,
+			address,
+			idcard,
+			idcardimg,
+			headimg,
+			employdate,
+			enddate,
+			email,
+			qq,
+			wechat,
+			weibo,
+			dingding,
+			type,
+			note,
+			createtime,
+			starttime,
+			endtime,
+			sort,
+			status,
+			barcode,
+		</trim>
+		values
+		<foreach collection="list" item="item" separator=",">
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				#{item.addressid},
+				#{item.deptid},
+				#{item.compid},
+				#{item.所属公司},
+				#{item.姓名},
+				#{item.年龄},
+				#{item.性别},
+				#{item.post},
+				#{item.所属部门},
+				#{item.title},
+				#{item.moble},
+				#{item.手机号},
+				#{item.地址},
+				#{item.idcard},
+				#{item.idcardimg},
+				#{item.头像},
+				#{item.employdate},
+				#{item.enddate},
+				#{item.email},
+				#{item.qq},
+				#{item.微信},
+				#{item.微博},
+				#{item.dingding},
+				#{item.类型},
+				#{item.note},
+				#{item.createtime},
+				#{item.starttime},
+				#{item.endtime},
+				#{item.排序},
+				#{item.状态},
+				#{item.barcode},
+			</trim>
+		</foreach>
+	</insert>
+	
+	<update id="update" parameterMap="parameterMap">
+		update employee
+		<set>
+			addressid = #{addressid},
+			deptid = #{deptid},
+			compid = #{compid},
+			compname = #{所属公司},
+			name = #{姓名},
+			age = #{年龄},
+			sex = #{性别},
+			post = #{post},
+			department = #{所属部门},
+			title = #{title},
+			moble = #{moble},
+			phone = #{手机号},
+			address = #{地址},
+			idcard = #{idcard},
+			idcardimg = #{idcardimg},
+			headimg = #{头像},
+			employdate = #{employdate},
+			enddate = #{enddate},
+			email = #{email},
+			qq = #{qq},
+			wechat = #{微信},
+			weibo = #{微博},
+			dingding = #{dingding},
+			type = #{类型},
+			note = #{note},
+			createtime = #{createtime},
+			starttime = #{starttime},
+			endtime = #{endtime},
+			sort = #{排序},
+			status = #{状态},
+			barcode = #{barcode},
+		</set>
+		where id = #{id}
+	</update>
+	
+	<update id="updateNotNull" parameterMap="parameterMap">
+		update employee
+		<set>
+			<if test="addressid != null">
+			addressid = #{addressid},
+			</if>
+			<if test="deptid != null">
+			deptid = #{deptid},
+			</if>
+			<if test="compid != null">
+			compid = #{compid},
+			</if>
+			<if test="所属公司 != null">
+			compname = #{所属公司},
+			</if>
+			<if test="姓名 != null">
+			name = #{姓名},
+			</if>
+			<if test="年龄 != null">
+			age = #{年龄},
+			</if>
+			<if test="性别 != null">
+			sex = #{性别},
+			</if>
+			<if test="post != null">
+			post = #{post},
+			</if>
+			<if test="所属部门 != null">
+			department = #{所属部门},
+			</if>
+			<if test="title != null">
+			title = #{title},
+			</if>
+			<if test="moble != null">
+			moble = #{moble},
+			</if>
+			<if test="手机号 != null">
+			phone = #{手机号},
+			</if>
+			<if test="地址 != null">
+			address = #{地址},
+			</if>
+			<if test="idcard != null">
+			idcard = #{idcard},
+			</if>
+			<if test="idcardimg != null">
+			idcardimg = #{idcardimg},
+			</if>
+			<if test="头像 != null">
+			headimg = #{头像},
+			</if>
+			<if test="employdate != null">
+			employdate = #{employdate},
+			</if>
+			<if test="enddate != null">
+			enddate = #{enddate},
+			</if>
+			<if test="email != null">
+			email = #{email},
+			</if>
+			<if test="qq != null">
+			qq = #{qq},
+			</if>
+			<if test="微信 != null">
+			wechat = #{微信},
+			</if>
+			<if test="微博 != null">
+			weibo = #{微博},
+			</if>
+			<if test="dingding != null">
+			dingding = #{dingding},
+			</if>
+			<if test="类型 != null">
+			type = #{类型},
+			</if>
+			<if test="note != null">
+			note = #{note},
+			</if>
+			<if test="createtime != null">
+			createtime = #{createtime},
+			</if>
+			<if test="starttime != null">
+			starttime = #{starttime},
+			</if>
+			<if test="endtime != null">
+			endtime = #{endtime},
+			</if>
+			<if test="排序 != null">
+			sort = #{排序},
+			</if>
+			<if test="状态 != null">
+			status = #{状态},
+			</if>
+			<if test="barcode != null">
+			barcode = #{barcode},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from employee where id = #{value}
+	</delete>
+	
+	<delete id="batchDelete" parameterType="java.util.List">
+		delete from employee where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+	
+</mapper>
